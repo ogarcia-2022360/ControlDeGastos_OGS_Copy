@@ -17,7 +17,7 @@ export class AuthService {
     if (foundUser) {
       // Creación del JWT simulado (Header.Payload.Signature)
       const header = btoa(JSON.stringify({ alg: "HS256", typ: "JWT" }));
-      const payload = btoa(JSON.stringify({ sub: username, role: foundUser.role, exp: Date.now() + 3600000 }));
+      const payload = btoa(JSON.stringify({ sub: username, role: foundUser.role, exp: Date.now() + (60 * 1000) }));
       const signature = "mock_sec_signature_key";
       
       const mockJwt = `${header}.${payload}.${signature}`;

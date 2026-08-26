@@ -1,1 +1,134 @@
-<p>dashboard works!</p>
+<div class="dashboard-layout">
+    <!-- Menú de Navegación Centrado Verticalmente -->
+    <nav class="sidebar">
+    <div class="nav-icon active" title="Dashboard Principal">
+        <img src="/assets/img/home.png" alt="Inicio" class="menu-img">
+        <span class="active-indicator"></span>
+    </div>
+    <div class="nav-icon" title="Reportes y Gráficas del Mes">
+        <img src="gastost-app/src/assets/img/reporte.jpg" alt="Reportes" class="menu-img">
+    </div>
+    <div class="nav-icon" title="Ingresos">
+        <img src="/assets/img/ingresos.png" alt="Ingresos" class="menu-img">
+    </div>
+    <div class="nav-icon" title="Gastos">
+        <img src="/assets/img/gastos.png" alt="Gastos" class="menu-img">
+    </div>
+    <div class="nav-icon" title="Ahorros">
+        <img src="/assets/img/ahorros.png" alt="Ahorros" class="menu-img">
+    </div>
+    </nav>
+
+    <!-- Contenedor Principal -->
+    <div class="main-container">
+        
+        <!-- Header Superior -->
+        <header class="header">
+            <div class="logo-title">
+                <div class="logo-circle">📊</div>
+                <h1>Control De Gastos</h1>
+            </div>
+            <button class="logout-btn" (click)="logout()">Cerrar Sesión</button>
+        </header>
+
+        <!-- Dashboard Grid Content con separación visual optimizada -->
+        <div class="dashboard-content">
+            
+            <!-- Columna Izquierda -->
+            <div class="left-column">
+                
+                <!-- Tarjetas Superiores -->
+                <div class="cards-top">
+                    <div class="card">
+                        <h3><span class="ingreso-lbl">Saldo</span> Actual:</h3>
+                        <div class="amount">Q. 5,430.00</div>
+                    </div>
+                    <div class="card">
+                        <h3><span class="gasto-lbl">Gasto</span> Actual:</h3>
+                        <div class="amount">Q. 1,850.00</div>
+                    </div>
+                </div>
+
+                <!-- Presupuesto Mensual -->
+                <div class="budget-section">
+                    <h2>Presupuesto Mensual</h2>
+                    
+                    <div class="budget-item">
+                        <span>Supermercado</span>
+                        <div class="progress-bar-container">
+                            <div class="progress-fill fill-green">80%</div>
+                        </div>
+                    </div>
+
+                    <div class="budget-item">
+                        <span>Transporte</span>
+                        <div class="progress-bar-container">
+                            <div class="progress-fill fill-orange">100%</div>
+                        </div>
+                    </div>
+
+                    <div class="budget-item">
+                        <span>Servicios</span>
+                        <div class="progress-bar-container">
+                            <div class="progress-fill fill-yellow">83%</div>
+                        </div>
+                    </div>
+
+                    <div class="budget-item">
+                        <span>Ocio</span>
+                        <div class="progress-bar-container">
+                            <div class="progress-fill fill-red">93%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botón de Acción -->
+                <div class="action-box">Ingresos y Gastos</div>
+
+                <!-- Gráfico de Ingresos y Gastos -->
+                <div class="chart-box">
+                    <div class="chart-legend">
+                        <div class="legend-item"><div class="dot-ingreso"></div> Ingreso</div>
+                        <div class="legend-item"><div class="dot-gasto"></div> Gastos</div>
+                    </div>
+                    <div class="fake-chart">
+                        <div class="bar-group"><div class="bar ingreso"></div><div class="bar gasto"></div></div>
+                        <div class="bar-group"><div class="bar ingreso" style="height: 60%;"></div><div class="bar gasto" style="height: 40%;"></div></div>
+                        <div class="bar-group"><div class="bar ingreso" style="height: 90%;"></div><div class="bar gasto" style="height: 80%;"></div></div>
+                        <div class="bar-group"><div class="bar ingreso" style="height: 85%;"></div><div class="bar gasto" style="height: 75%;"></div></div>
+                        <div class="bar-group"><div class="bar ingreso" style="height: 88%;"></div><div class="bar gasto" style="height: 70%;"></div></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Columna Derecha (Ahorros) -->
+            <aside class="savings-column">
+                <h2>Ahorros</h2>
+                
+                <div class="saving-item">
+                    <label>Viaje</label>
+                    <div class="slider-line">
+                        <div class="slider-thumb" style="left: 40%;"></div>
+                    </div>
+                </div>
+
+                <div class="saving-item">
+                    <label>Emergencias</label>
+                    <div class="slider-line">
+                        <div class="slider-thumb" style="left: 75%;"></div>
+                    </div>
+                </div>
+
+                <div class="saving-item">
+                    <label>Gustos Personales</label>
+                    <div class="slider-line">
+                        <div class="slider-thumb" style="left: 20%;"></div>
+                    </div>
+                </div>
+            </aside>
+
+        </div>
+
+    </div>
+</div>

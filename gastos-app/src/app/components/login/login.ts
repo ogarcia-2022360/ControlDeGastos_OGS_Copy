@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -14,13 +15,16 @@ export class LoginComponent {
   password = '';
   error = false;
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   onLogin() {
     if (this.authService.login(this.username, this.password)) {
-      alert('¡Bienvenido, ' + this.username + '! Usuario Autenticado');
       this.error = false;
-    } else {
+      this.router.navigate(['/dashboard']);
+    } else {  
       this.error = true;
     }
   }
