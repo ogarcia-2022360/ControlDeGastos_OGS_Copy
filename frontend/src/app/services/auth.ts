@@ -1,39 +1,30 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  // Credenciales actualizadas exactamente como lo pediste
-  private users = [
-    { username: 'ADMIN', password: 'admin', role: 'admin' },
-    { username: 'oliver', password: '2022360', role: 'user' }
-  ];
+  private apiUrl = 'http://localhost:3000/api/auth';
 
-  constructor() { }
+  constructor(private http: HttpClient) {}
 
-  login(username: string, password: string): boolean {
-    const foundUser = this.users.find(u => u.username === username && u.password === password);
-    if (foundUser) {
-      // Creación del JWT simulado (Header.Payload.Signature)
-      const header = btoa(JSON.stringify({ alg: "HS256", typ: "JWT" }));
-      const payload = btoa(JSON.stringify({ sub: username, role: foundUser.role, exp: Date.now() + (60 * 1000) }));
-      const signature = "mock_sec_signature_key";
-      
-      const mockJwt = `${header}.${payload}.${signature}`;
-      
-      // Guardamos el token JWT en el almacenamiento local del navegador
-      localStorage.setItem('token', mockJwt);
-      return true;
-    }
-    return false;
+  login(credentials: { username: string; password: string }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/login`, credentials).pipe(
+      tap((response: any) => {
+        if (response.success && response.data?.token) {
+          localStorage.setItem('token', response.data.token);
+        }
+      })
+    );
   }
 
-  logout() {
+  getToken(): string | null {
+    return localStorage.getItem('token');
+  }
+
+  logout(): void {
     localStorage.removeItem('token');
-  }
-
-  isAuthenticated(): boolean {
-    return !!localStorage.getItem('token');
   }
 }

@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { AuthService } from './auth.service';
 
-const router = Router();
+const router: Router = Router();
 
 router.post('/login', async (req, res) => {
   try {

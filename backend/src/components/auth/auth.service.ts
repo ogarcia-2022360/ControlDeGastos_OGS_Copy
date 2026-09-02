@@ -2,7 +2,7 @@ import { pool } from '../../config/database';
 import jwt from 'jsonwebtoken';
 
 export class AuthService {
-  // Login tradicional con token de 2 minutos
+  
   static async login(username: string, password: string) {
     const result = await pool.query(
       'SELECT * FROM usuarios WHERE username = $1 AND password = $2',
@@ -23,13 +23,13 @@ export class AuthService {
     return { token, username: user.username };
   }
 
-  // Login con Google (Estructura base)
+  // Login con Google
   static async googleLogin(idToken: string) {
     if (!idToken) {
       throw new Error('Token de Google requerido');
     }
 
-    // Lógica para validar el token de Google
+    // validar el token de Google
     return { message: 'Autenticación con Google en proceso' };
   }
 }

@@ -1,31 +1,34 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../../services/auth';
-import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { AuthService } from '../../services/auth';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './login.html',
-  styleUrl: './login.css'
+  styleUrls: ['./login.css']
 })
 export class LoginComponent {
-  username = '';
-  password = '';
-  error = false;
+  credentials = { username: '', password: '' };
+  errorMessage = '';
 
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
-  onLogin() {
-    if (this.authService.login(this.username, this.password)) {
-      this.error = false;
-      this.router.navigate(['/dashboard']);
-    } else {  
-      this.error = true;
-    }
+  onLogin(): void {
+    this.errorMessage = '';
+    this.authService.login(this.credentials).subscribe({
+      next: (res) => {
+        if (res.success) {
+          // Redirige al Dashboard tras un inicio de sesión exitoso
+          this.router.navigate(['/dashboard']);
+        }
+      },
+      error: (err) => {
+        this.errorMessage = err.error?.message || 'Usuario o contraseña incorrectos';
+      }
+    });
   }
 }
