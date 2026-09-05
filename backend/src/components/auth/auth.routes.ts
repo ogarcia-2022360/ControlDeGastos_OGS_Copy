@@ -1,16 +1,10 @@
 import { Router } from 'express';
-import { AuthService } from './auth.service';
+import { login, register, googleAuth } from './auth.controller';
 
 const router: Router = Router();
 
-router.post('/login', async (req, res) => {
-  try {
-    const { username, password } = req.body;
-    const result = await AuthService.login(username, password);
-    res.json({ success: true, data: result });
-  } catch (error: any) {
-    res.status(400).json({ success: false, message: error.message });
-  }
-});
+router.post('/login', login);
+router.post('/register', register);
+router.post('/google', googleAuth);
 
 export default router;

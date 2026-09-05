@@ -7,30 +7,20 @@ import { AuthService } from '../../services/auth';
 declare const google: any;
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-registro',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
-  templateUrl: './login.html',
-  styleUrls: ['./login.css']
+  templateUrl: './registro.html',
+  styleUrls: ['./registro.css']
 })
-export class LoginComponent implements OnInit {
-  // Objeto credentials para sincronizar con [(ngModel)]="credentials.username" y credentials.password
-  credentials = {
-    username: '',
-    password: ''
-  };
-
-  // Aliases para compatibilidad con la plantilla HTML
-  get correo(): string { return this.credentials.username; }
-  set correo(val: string) { this.credentials.username = val; }
-
-  get password(): string { return this.credentials.password; }
-  set password(val: string) { this.credentials.password = val; }
-
+export class RegistroComponent implements OnInit {
+  nombre: string = '';
+  apellido: string = '';
+  correo: string = '';
+  password: string = '';
   mostrarPassword: boolean = false;
   errorMensaje: string = '';
 
-  // Alias para sincronizar con el HTML que busca 'errorMessage'
   get errorMessage(): string { return this.errorMensaje; }
   set errorMessage(val: string) { this.errorMensaje = val; }
 
@@ -51,7 +41,7 @@ export class LoginComponent implements OnInit {
         callback: (response: any) => this.handleGoogleCredential(response)
       });
 
-      const btnContainer = document.getElementById('googleBtn');
+      const btnContainer = document.getElementById('googleRegisterBtn');
       if (btnContainer) {
         google.accounts.id.renderButton(btnContainer, {
           theme: 'outline',
@@ -70,27 +60,34 @@ export class LoginComponent implements OnInit {
         });
       },
       error: (err: any) => {
-        this.errorMensaje = 'Error al autenticar con Google';
+        this.errorMensaje = 'Error al registrar con Google';
       }
     });
   }
 
-  onLogin(): void {
-    if (!this.credentials.username || !this.credentials.password) {
+  onRegister(): void {
+    this.onRegistro();
+  }
+
+  onRegistro(): void {
+    if (!this.nombre || !this.correo || !this.password) {
       this.errorMensaje = 'Por favor completa todos los campos';
       return;
     }
 
-    this.authService.login({ correo: this.credentials.username, password: this.credentials.password }).subscribe({
+    const userData = {
+      nombre: this.nombre,
+      apellido: this.apellido,
+      correo: this.correo,
+      password: this.password
+    };
+
+    this.authService.register(userData).subscribe({
       next: (res: any) => {
-        if (res.token) {
-          localStorage.setItem('token', res.token);
-          localStorage.setItem('usuario', JSON.stringify(res.user || { email: this.credentials.username }));
-        }
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/login']);
       },
       error: (err: any) => {
-        this.errorMensaje = err.error?.message || 'Credenciales incorrectas';
+        this.errorMensaje = err.error?.message || 'Error al registrar usuario';
       }
     });
   }

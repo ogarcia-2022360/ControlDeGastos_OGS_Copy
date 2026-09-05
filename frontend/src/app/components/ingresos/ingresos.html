@@ -1,0 +1,104 @@
+<div class="ingresos-layout">
+  <nav class="sidebar">
+    <div class="nav-icon" [routerLink]="['/dashboard']" title="Dashboard">
+      <img src="assets/img/homeN.png" alt="Inicio" class="menu-img">
+    </div>
+    <div class="nav-icon" [routerLink]="['/reportes']" title="Reportes">
+      <img src="assets/img/reporte.jpg" alt="Reportes" class="menu-img">
+    </div>
+    <div class="nav-icon active" [routerLink]="['/ingresos']" title="Ingresos">
+      <img src="assets/img/ingresos.png" alt="Ingresos" class="menu-img">
+    </div>
+    <div class="nav-icon" [routerLink]="['/gastos']" title="Gastos">
+      <img src="assets/img/gastos.png" alt="Gastos" class="menu-img">
+    </div>
+    <div class="nav-icon" [routerLink]="['/ahorros']" title="Ahorros">
+      <img src="assets/img/ahorros.png" alt="Ahorros" class="menu-img">
+    </div>
+  </nav>
+
+  <div class="main-container">
+    <header class="header-pill">
+      <div class="logo-title">
+        <div class="logo-circle">
+          <img src="assets/img/logo_empresa.jpg" alt="Logo">
+        </div>
+        <h1>Control De Gastos</h1>
+      </div>
+      <div class="user-session">
+        <span class="user-email">usuario@correo.com</span>
+        <button class="logout-btn" [routerLink]="['/login']">Cerrar Sesión</button>
+      </div>
+    </header>
+
+    <div class="ingresos-content">
+      <div class="left-column">
+        <div class="page-title-badge">Ingresos</div>
+
+        <div class="total-pill hover-card">
+          Total de Ingresos: Q. {{ totalIngresos | number:'1.2-2' }}
+        </div>
+
+        <div class="card-section hover-card">
+          <h3>Ingresos fijos</h3>
+          <button class="add-btn" type="button" (click)="abrirModal('fijo')">+ Agregar Ingreso</button>
+          
+          <div class="items-list">
+            <div class="purple-item" *ngFor="let item of ingresosFijos">
+              <span>{{ item.descripcion }}:</span>
+              <strong>Q. {{ item.monto | number:'1.2-2' }}</strong>
+            </div>
+            <p class="empty-msg" *ngIf="ingresosFijos.length === 0">Sin ingresos fijos registrados.</p>
+          </div>
+        </div>
+
+        <div class="card-section hover-card">
+          <h3>Ingresos extras</h3>
+          <button class="add-btn" type="button" (click)="abrirModal('extra')">+ Agregar Ingreso</button>
+
+          <div class="items-list">
+            <div class="purple-item" *ngFor="let item of ingresosExtras">
+              <span>{{ item.descripcion }}:</span>
+              <strong>Q. {{ item.monto | number:'1.2-2' }}</strong>
+            </div>
+            <p class="empty-msg" *ngIf="ingresosExtras.length === 0">Sin ingresos extras registrados.</p>
+          </div>
+        </div>
+      </div>
+
+      <aside class="right-column hover-card">
+        <h2>Tabla de Registros:</h2>
+        <div class="records-container">
+          <div class="record-card" *ngFor="let item of ingresos">
+            <div class="record-title">Ingreso Guardado:</div>
+            <div class="record-line"><span>Descripcion:</span> <strong>{{ item.descripcion }}</strong></div>
+            <div class="record-line"><span>Fecha:</span> <span>{{ item.fecha }}</span></div>
+            <div class="record-line"><span>Monto:</span> <strong>Q. {{ item.monto | number:'1.2-2' }}</strong></div>
+            <div class="record-line"><span>Categoria:</span> <span class="capitalize">Ingresos {{ item.categoria }}s</span></div>
+          </div>
+          <p class="empty-msg" *ngIf="ingresos.length === 0">No hay registros de ingresos.</p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="mostrarModal">
+  <div class="modal-box">
+    <h3>Agregar Ingreso ({{ nuevaCategoria | titlecase }})</h3>
+    <form (ngSubmit)="guardarIngreso()">
+      <div class="form-group">
+        <label>Descripción:</label>
+        <input type="text" [(ngModel)]="nuevaDescripcion" name="nuevaDescripcion" placeholder="Ej. Salario" required>
+      </div>
+      <div class="form-group">
+        <label>Monto (Q):</label>
+        <input type="number" [(ngModel)]="nuevoMonto" name="nuevoMonto" placeholder="0.00" required>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="cancel-btn" (click)="cerrarModal()">Cancelar</button>
+        <button type="submit" class="save-btn">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>

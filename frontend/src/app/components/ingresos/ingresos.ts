@@ -5,21 +5,18 @@ import { RouterLink } from '@angular/router';
 import { IngresoService, Ingreso } from '../../services/ingreso.service';
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-ingresos',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
-  templateUrl: './dashboard.html',
-  styleUrls: ['./dashboard.css']
+  templateUrl: './ingresos.html',
+  styleUrls: ['./ingresos.css']
 })
-export class DashboardComponent implements OnInit {
-  // Variables del Usuario e Interfaz
-  userEmail: string = 'usuario@correo.com';
-  saldoActual: number = 0;
-  gastoActual: number = 0;
-  tieneDatos: boolean = false;
+export class IngresosComponent implements OnInit {
   ingresos: Ingreso[] = [];
+  ingresosFijos: Ingreso[] = [];
+  ingresosExtras: Ingreso[] = [];
+  totalIngresos: number = 0;
 
-  // Variables requeridas por el formulario modal de ingresos
   mostrarModal: boolean = false;
   nuevaCategoria: string = 'fijo';
   nuevaDescripcion: string = '';
@@ -28,34 +25,22 @@ export class DashboardComponent implements OnInit {
   constructor(private ingresoService: IngresoService) {}
 
   ngOnInit(): void {
-    this.cargarUsuario();
-    this.cargarDatos();
+    this.cargarIngresos();
   }
 
-  cargarUsuario(): void {
-    const usuarioStorage = localStorage.getItem('usuario');
-    if (usuarioStorage) {
-      try {
-        const usuario = JSON.parse(usuarioStorage);
-        this.userEmail = usuario.email || usuario.correo || 'usuario@correo.com';
-      } catch (e) {
-        console.error('Error al parsear el usuario', e);
-      }
-    }
-  }
-
-  cargarDatos(): void {
+  cargarIngresos(): void {
     this.ingresoService.getIngresos().subscribe({
       next: (data) => {
         this.ingresos = data || [];
-        this.saldoActual = this.ingresos.reduce((sum, item) => sum + Number(item.monto), 0);
-        this.tieneDatos = this.ingresos.length > 0;
+        this.ingresosFijos = this.ingresos.filter(i => i.categoria === 'fijo');
+        this.ingresosExtras = this.ingresos.filter(i => i.categoria === 'extra');
+        this.totalIngresos = this.ingresos.reduce((sum, item) => sum + Number(item.monto), 0);
       },
-      error: (err) => console.error('Error al cargar datos en dashboard:', err)
+      error: (err) => console.error('Error al cargar ingresos:', err)
     });
   }
 
-  abrirModal(categoria: string = 'fijo'): void {
+  abrirModal(categoria: string): void {
     this.nuevaCategoria = categoria;
     this.nuevaDescripcion = '';
     this.nuevoMonto = null;
@@ -83,11 +68,11 @@ export class DashboardComponent implements OnInit {
 
     this.ingresoService.addIngreso(nuevo).subscribe({
       next: () => {
-        this.cargarDatos();
+        this.cargarIngresos();
         this.cerrarModal();
       },
       error: (err) => {
-        console.error('Error al guardar desde dashboard:', err);
+        console.error('Error guardando ingreso:', err);
         this.cerrarModal();
       }
     });

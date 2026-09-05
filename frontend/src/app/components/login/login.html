@@ -1,28 +1,56 @@
 <div class="login-container">
   <div class="login-card">
-    <h2>BIENVENIDO</h2>
-    <p class="subtitle">Aplicacion Control de Gastos</p>
+    <h1 class="title">BIENVENIDO</h1>
+    <p class="subtitle">Aplicación Control de Gastos</p>
 
-    <!-- Campo de Usuario con icono -->
-    <div class="input-container">
-      <div class="icon-bubble left-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-      </div>
-      <input type="text" [(ngModel)]="credentials.username" placeholder="Usuario" (keyup.enter)="onLogin()" />
+    <div class="tabs">
+      <button class="tab-btn active" type="button">INICIAR SESIÓN</button>
+      <button class="tab-btn" type="button" [routerLink]="['/registro']">REGISTRARSE</button>
     </div>
 
-    <!-- Campo de Contraseña con icono -->
-    <div class="input-container">
-      <input type="password" [(ngModel)]="credentials.password" placeholder="Contraseña" (keyup.enter)="onLogin()" />
-      <div class="icon-bubble right-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+    <form (ngSubmit)="onLogin()" class="login-form">
+      <div class="input-group">
+        <span class="input-icon">
+          <i class="fas fa-envelope"></i>
+        </span>
+        <input
+          type="email"
+          name="username"
+          [(ngModel)]="credentials.username"
+          placeholder="Correo electrónico"
+          required
+        />
       </div>
+
+      <div class="input-group">
+        <span class="input-icon">
+          <i class="fas fa-lock"></i>
+        </span>
+        <input
+          [type]="mostrarPassword ? 'text' : 'password'"
+          name="password"
+          [(ngModel)]="credentials.password"
+          placeholder="Contraseña"
+          required
+        />
+        <span class="toggle-password" (click)="mostrarPassword = !mostrarPassword">
+          <i [class]="mostrarPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+        </span>
+      </div>
+
+      <p *ngIf="errorMessage" class="error-text">{{ errorMessage }}</p>
+
+      <button type="submit" class="submit-btn">INGRESAR</button>
+    </form>
+
+    <div class="divider">
+      <span>o</span>
     </div>
 
-    <button (click)="onLogin()">INGRESAR</button>
+    <div id="googleBtn" class="google-btn-container"></div>
 
-    @if (errorMessage) {
-      <div class="error-msg">{{ errorMessage }}</div>
-    }
+    <p class="footer-text">
+      ¿No tienes una cuenta? <a [routerLink]="['/registro']">Regístrate</a>
+    </p>
   </div>
 </div>
